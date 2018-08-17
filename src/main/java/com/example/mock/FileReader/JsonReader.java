@@ -1,39 +1,22 @@
 package com.example.mock.FileReader;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
 @Component
 public class JsonReader {
-
-	public static void main(String[] args) throws IOException {
-
-		JsonReader jr = new JsonReader();
-
-		String res = jr.readDataFromFile();
-
-		System.out.println(res);
-	}
-
+	
 	public String readDataFromFile() throws IOException {
 
-		ClassLoader classLoader = getClass().getClassLoader();
-
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(classLoader.getResourceAsStream("static/Employees.json")));
-
-		StringBuffer sb = new StringBuffer();
-
-		String currentLine;
-
-		while ((currentLine = br.readLine()) != null) {
-
-			sb.append(currentLine);
-
-		}
+		StringBuilder sb = new StringBuilder();
+		
+		Stream<String> stream  =  Files.lines(Paths.get(("src/main/resources/static/Employees.json")));
+		
+		stream.forEach(line -> sb.append(line));
 
 		return sb.toString();
 	}
