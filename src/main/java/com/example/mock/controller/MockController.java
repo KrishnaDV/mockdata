@@ -1,15 +1,19 @@
 package com.example.mock.controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.mock.FileReader.JsonReader;
+import com.example.mock.bean.HeatMap;
 import com.example.mock.service.MockCpuService;
 import com.example.mock.service.MockResponseService;
 import com.example.mock.util.CpuUsage;
+import com.example.mock.util.HeatMapUtil;
 
 @RestController
 public class MockController {
@@ -22,6 +26,9 @@ public class MockController {
 
 	@Autowired
 	MockResponseService mrs;
+	
+	@Autowired
+	HeatMapUtil heatUtil;
 
 	@GetMapping(path = "/getEmployees", produces = "application/json")
 	public String getEmpl() throws IOException {
@@ -52,4 +59,11 @@ public class MockController {
 	public CpuUsage scheduleTaskWithFixedRate() {
 		return mcs.getMetrics();
 	}
+	
+	@GetMapping(path = "/getHeatMetrics", produces = "application/json")
+	public List<HeatMap> getHeatMetrics() {
+		return heatUtil.getData();
+	}
+	
+	
 }
